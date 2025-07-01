@@ -1,0 +1,2 @@
+# diamond
+just a daemon
