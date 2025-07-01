@@ -2,5 +2,14 @@
 name = "diamond"
 version = "0.1.0"
 edition = "2024"
+authors = ["misaka10987 <misaka10987@outlook.com>"]
+description = "Common library for diamond, just a daemon"
+documentation = "https://github.com/misaka10987/diamond"
+homepage = "https://github.com/misaka10987/diamond"
+repository = "https://github.com/misaka10987/diamond"
+readme = "../README.md"
+keywords = ["diamond", "service", "daemon", "init", "systemd"]
+license = "MIT"
 
 [dependencies]
+thiserror = "2.0.12"
