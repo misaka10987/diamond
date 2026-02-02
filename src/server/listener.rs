@@ -9,9 +9,17 @@ use interprocess::local_socket::{
 };
 use tracing::{debug, error};
 
+/// A connection listener on top of the `interprocess` local socket IPC.
 pub struct Listener {
+    /// Path to the local socket.
+    ///
+    /// # Platform-specific Behavior
+    ///
+    /// On Unix systems, this is equivalant to the filesystem path.
+    ///
+    /// On Windows, the path **must** start with `\\.\pipe\`. The remainder of the path is used to create a named pipe.
     pub path: PathBuf,
-    pub ipc: local_socket::tokio::Listener,
+    ipc: local_socket::tokio::Listener,
 }
 
 impl Listener {
