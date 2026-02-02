@@ -1,18 +1,13 @@
 use std::path::PathBuf;
 
-use thiserror::Error;
-
-pub fn user_uds_path() -> Result<PathBuf, UserUdsPathError> {
+pub fn user_uds_path() -> anyhow::Result<PathBuf> {
     #[cfg(unix)]
     {
-        use std::env::home_dir;
+        use dirs::{data_local_dir, runtime_dir};
 
-        let home = home_dir().ok_or(UserUdsPathError::MissingHome)?;
-        let path = home
-            .join(".local")
-            .join("var")
-            .join("run")
-            .join("diamond.sock");
+        let base = runtime_dir().or_else(data_local_dir).unwrap();
+
+        let path = base.join("diamond.sock");
         Ok(path)
     }
     #[cfg(windows)]
@@ -26,16 +21,6 @@ pub fn user_uds_path() -> Result<PathBuf, UserUdsPathError> {
             .join("api.sock");
         Ok(path)
     }
-}
-
-#[derive(Debug, Error)]
-pub enum UserUdsPathError {
-    #[cfg(unix)]
-    #[error("no home directory for the user")]
-    MissingHome,
-    #[cfg(windows)]
-    #[error(transparent)]
-    Username(#[from] std::env::VarError),
 }
 
 pub fn system_uds_path() -> PathBuf {
