@@ -1,23 +1,25 @@
+mod listener;
+
 use std::{ops::Deref, sync::Arc};
 
+use crate::{system_uds_path, user_uds_path};
 use axum::{
     Router,
     extract::State,
     routing::{get, post},
 };
-use diamond::{system_uds_path, user_uds_path};
 use tokio::{fs::create_dir_all, signal::ctrl_c, sync::Notify};
 use tracing::{debug, error, info};
 
-use crate::listener::Listener;
+use listener::Listener;
+
+#[derive(Clone)]
+pub struct Server(Arc<ServerInst>);
 
 pub struct ServerInst {
     pub system: bool,
     pub shutdown: Notify,
 }
-
-#[derive(Clone)]
-pub struct Server(Arc<ServerInst>);
 
 impl Deref for Server {
     type Target = ServerInst;
