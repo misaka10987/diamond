@@ -27,3 +27,4 @@ tracing-subscriber = "0.3.19"
 clap = { version = "4.5.40", features = ["derive"] }
 dirs = "6.0.0"
 serde = { version = "1.0.228", features = ["derive"] }
+serde-inline-default = "1.0.1"
